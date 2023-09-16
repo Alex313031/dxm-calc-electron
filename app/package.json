@@ -1,0 +1,34 @@
+{
+  "name": "dxm-calc-electron",
+  "appName": "DXM Calculator",
+  "productName": "DXM Calculator",
+  "applicationId": "com.alex313031.dxmcalc",
+  "version": "0.2.0",
+  "description": "Dextromethorphan Dosage Calculator",
+  "author": "Alex313031",
+  "license": "BSD-3-Clause",
+  "repository": "https://github.com/Alex313031/dxm-calc-electron",
+  "main": "./app.js",
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "test": "echo \"Error: No test specified\" && exit 1",
+    "clean": "rimraf node_modules",
+    "burn": "rimraf package-lock.json",
+    "start": "electron .",
+    "winstart": "electron ."
+  },
+  "dependencies": {
+    "@electron/remote": "2.0.11",
+    "electron-context-menu": "3.6.1",
+    "electron-default-menu": "^1.0.2",
+    "electron-log": "4.4.8",
+    "electron-util": "^0.17.2"
+  },
+  "devDependencies": {
+    "asar": "3.2.0",
+    "electron": "22.3.24",
+    "rimraf": "3.0.2"
+  }
+}

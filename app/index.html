@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DXM Calculator</title>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <meta name="description" content="Dextromethorphan Dosage Calculator">
+  <link rel="author" href="humans.txt">
+  <link rel="stylesheet" type="text/css" href="css/lib/bootstrap-theme.min.css">
+  <link rel="stylesheet" type="text/css" href="css/lib/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script type="text/javascript" src="js/lib/jquery-3.7.1.min.js"></script>
+  <script type="text/javascript" src="js/lib/bootstrap-3.3.7.min.js"></script>
+  <script type="text/javascript" src="js/lib/clipboard-1.5.16.min.js"></script>
+  <script type="text/javascript" src="js/dxmcalc-1.0.12.js"></script>
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'">
+</head>
+<body>
+  <div style="margin-top:2%;" class="container-fluid">
+    <div class="jumbotron">
+      <h2>
+        <b>DXM Dosage Calculator</b>
+      </h2>
+      <br>
+      <h4>This is a simple calculator designed to help you discern how much
+        <a target="_blank" rel="noopener" href="https://drugs.tripsit.me/dxm">DXM</a> you need to take reach each plateau of experience, depending on variable factors such as your weight and
+        concentration of the product you're using. For a description of the plateau model, and the effects you can expect
+        at each level, click
+        <a target="_blank" rel="noopener" href="https://wiki.tripsit.me/wiki/DXM#Plateaus">here.</a>
+      </h4>
+      <h4> DXM-containing products may also contain several potentially dangerous adulterants; you must make sure that your
+        product contains only DXM as its active ingredient. For more information about DXM adulterants, see
+        <a target="_blank" rel="noopener" href="https://wiki.tripsit.me/wiki/DXM#Adulteration">here.</a>
+      </h4>
+      <h4> For information about combining DXM with other drugs, check out our
+        <a target="_blank" title="Drug Combinations Chart" href="imgs/Drug_Combos_2.png">Combo Chart</a>. Make sure to read the label and research the product thoroughly before using it.
+      </h4>
+      <br>
+      <div class="flex">
+        <h4>Auto</h4>
+        <div id="checkbox">
+          <label class="switch">
+            <input type="checkbox" id="modeSwitch" onclick="changeMode()">
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <h4>Manual</h4>
+      </div>
+      <div class="form-group active" id="autoInput">
+        <h2>Auto mode:</h2>
+         <h4 class="bs-callout bs-callout-danger">NOTE: All products listed here contain DXM hBr as the sole active ingredient.</h4>
+        <div class="form-inline">
+          <form action="" method="POST" name="autoForm" type="post" class="">
+            <h4>
+              <br> I weigh
+              <input type="text" name="weight" id="weightAutoInput" value="" size="6" oninput="auto()" class="form-control" placeholder="Weight"> in
+              <select name="wunit" id="autoWeightUnit" type="text" onchange="auto()" class="form-control">
+                <option value="1" selected>kg
+                  <option value="0.4536">lbs
+              </select>&nbsp;and I want to take&nbsp;
+              <select name="substance" onchange="auto()" class="form-control" id="autoSubstance"></select>
+            </h4>
+          </form>
+        </div>
+      </div>
+      <div id="manualInput" class="form-group active">
+        <h2>Manual mode:</h2>
+        <h4 class="bs-callout bs-callout-danger">
+          NOTE: Please make sure your product does not contain the following:
+          <a target="_blank" rel="noopener" href="https://wiki.tripsit.me/wiki/DXM#Adulteration">Acetaminophen(Paracetamol), Guaifenesin, Antihistamines or Pseudoephedrine.</a> This is still intended to be
+          used with DXM hBr product only.
+        </h4>
+        <h4>
+          <br> 
+          <div class="form-inline">
+            <form action="" method="POST" name="manualForm" type="post" class="">
+              <span>I weigh</span> 
+              <input type="text" name="weightManual" id="weightManualInput" value="" size="6" oninput="manual()" class="form-control" placeholder="Weight"> in
+              <select id="manualWeightUnit" name="wunitManual" type="text" onchange="manual()" class="form-control">
+                <option value="1" selected>kg
+                  <option value="0.4536">lbs
+              </select>&nbsp;and I want to take&nbsp;
+              <input type="number" name="manualMode" value="1" id="manualMode" oninput="manual()" class="form-control" placeholder="" size="2">
+               mg dxm per
+              <select name="per5" id="per5" onchange="manual()">
+                <option value="1" selected>1 ml</option>
+                <option value="3">3 ml</option>
+                <option value="5">5 ml</option>
+                <option value="10">10 ml</option>
+                <option value="15">15 ml</option>
+                <option value="20">20 ml</option>
+              </select>
+          </form>
+        </h4>
+      </div>
+      <table>
+        <tr>
+          <td class="td-left">
+            <h4>Plateau</h4>
+          </td>
+          <td>
+            <h4>Minimum</h4>
+          </td>
+          <td>
+            <h4>Maximum</h4>
+          </td>
+        </tr>
+        <tr class="tr-first outputResult">
+          <td class="td-left">
+            <p class="tdText">1st:</p>
+          </td>
+          <td>
+            <p class="tdText">
+              <span id="p1l"></span>
+            </p>
+          </td>
+          <td class="outputResult">
+            <p class="tdText">
+              <span id="p1h"></span>
+            </p>
+          </td>
+        </tr>
+        <tr class="tr-second outputResult">
+          <td class="td-left">
+            <p class="tdText">2nd:</p>
+          </td>
+          <td>
+            <p class="tdText">
+              <span id="p2l"></span>
+            </p>
+          </td>
+          <td>
+            <p class="tdText">
+              <span id="p2h"></span>
+            </p>
+          </td>
+        </tr>
+        <tr class="tr-third outputResult">
+          <td class="td-left">
+            <p class="tdText">3rd:</p>
+          </td>
+          <td>
+            <p class="tdText">
+              <span id="p3l"></span>
+            </p>
+          </td>
+          <td>
+            <p class="tdText">
+              <span id="p3h"></span>
+            </p>
+          </td>
+        </tr>
+        <tr class="tr-fourth outputResult">
+          <td class="td-left">
+            <p class="tdText">4th:</p>
+          </td>
+          <td>
+            <p class="tdText">
+              <span id="p4l"></span>
+            </p>
+          </td>
+          <td>
+            <p class="tdText">
+              <span id="p4h"></span>
+            </p>
+          </td>
+        </tr>
+      </table>
+    <p>Note: You should always start low and work your way up untill you find the doses that are right for you.</p>
+    <p><small>Made by <a href="https://github.com/Alex313031" target="_blank" rel="noopener">Alex313031</a></small></p>
+  </div>
+</body>
+</html>
